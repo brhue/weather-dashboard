@@ -88,7 +88,10 @@ function getForecast(lat, lon) {
 
 function showForecast(nextFive) {
   fiveDayContainer.innerHTML = '';
-
+  let forecastHeader = document.createElement('h2');
+  forecastHeader.innerText = '5-Day Forecast:';
+  let daysContainer = document.createElement('div');
+  daysContainer.setAttribute('class', 'days-container');
   nextFive.forEach(day => {
     let dayEl = document.createElement('div');
     let dateEl = document.createElement('h2');
@@ -103,8 +106,9 @@ function showForecast(nextFive) {
     humidityEl.textContent = 'Humidity: ' + day.humidity + '%';
 
     dayEl.append(dateEl, iconEl, tempEl, humidityEl);
-    fiveDayContainer.append(dayEl);
+    daysContainer.append(dayEl);
   });
+  fiveDayContainer.append(forecastHeader, daysContainer);
 }
 
 submitBtn.addEventListener('click', e => {
