@@ -11,8 +11,9 @@ function getCurrentWeather(location) {
   fetch(apiUrl + 'weather?q=' + location + '&units=imperial&appid=' + apiKey)
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      // console.log(data);
       showCurrentWeather(data);
+      getForecast(data.coord.lat, data.coord.lon);
     });
 }
 
@@ -32,7 +33,40 @@ function showCurrentWeather(data) {
   currentWeatherContainer.append(cityNameEl, temperatureEl, humidityEl, windSpeedEl);
 }
 
+function getForecast(lat, lon) {
+  fetch(apiUrl + 'onecall?lat='+ lat + '&lon='+ lon + '&exclude=current,minutely,hourly,alerts&units=imperial&appid=' + apiKey)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      let nextFiveDays = data.daily.slice(1, 6);
+      showForecast(nextFiveDays);
+    });
+}
+
+function showForecast(nextFive) {
+  fiveDayContainer.innerHTML = '';
+
+  nextFive.forEach(day => {
+    let dayEl = document.createElement('div');
+    let dateEl = document.createElement('h2');
+    let iconEl = document.createElement('img');
+    let tempEl = document.createElement('p');
+    let humidityEl = document.createElement('p');
+
+    dayEl.setAttribute('class', 'forecast-day');
+    dateEl.textContent = new Date(day.dt * 1000).toLocaleDateString();
+    iconEl.setAttribute('src', 'http://openweathermap.org/img/wn/' + day.weather[0].icon + '@2x.png');
+    tempEl.textContent = 'Temp: ' + day.temp.day + '°F';
+    humidityEl.textContent = 'Humidity: ' + day.humidity + '%';
+
+    dayEl.append(dateEl, iconEl, tempEl, humidityEl);
+    fiveDayContainer.append(dayEl);
+  });
+}
+
 submitBtn.addEventListener('click', e => {
   e.preventDefault();
-  getCurrentWeather(searchInput.value.trim());
+  let location = searchInput.value.trim();
+  getCurrentWeather(location);
+  searchInput.value = '';
 });
