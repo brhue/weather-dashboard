@@ -51,12 +51,33 @@ function showCurrentWeather(data) {
   currentWeatherContainer.append(cityNameEl, temperatureEl, humidityEl, windSpeedEl);
 }
 
+function showUvIndex(uvi) {
+  let uviEl = document.createElement('p');
+  uviEl.textContent = 'UV Index: ';
+  let uviSpan = document.createElement('span');
+  uviSpan.textContent = uvi;
+  if (uvi < 3) {
+    uviSpan.setAttribute('class', 'uv uv-low');
+  } else if (uvi < 6) {
+    uviSpan.setAttribute('class', 'uv uv-moderate');
+  } else if (uvi < 8) {
+    uviSpan.setAttribute('class', 'uv uv-high');
+  } else if (uvi < 11) {
+    uviSpan.setAttribute('class', 'uv uv-very-high');
+  } else {
+    uviSpan.setAttribute('class', 'uv uv-extreme');
+  }
+  uviEl.append(uviSpan);
+  currentWeatherContainer.append(uviEl);
+}
+
 function getForecast(lat, lon) {
-  fetch(apiUrl + 'onecall?lat='+ lat + '&lon='+ lon + '&exclude=current,minutely,hourly,alerts&units=imperial&appid=' + apiKey)
+  fetch(apiUrl + 'onecall?lat='+ lat + '&lon='+ lon + '&exclude=minutely,hourly,alerts&units=imperial&appid=' + apiKey)
     .then(response => response.json())
     .then(data => {
       console.log(data);
       let nextFiveDays = data.daily.slice(1, 6);
+      showUvIndex(data.current.uvi);
       showForecast(nextFiveDays);
     });
 }
