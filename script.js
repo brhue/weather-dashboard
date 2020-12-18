@@ -7,11 +7,31 @@ let fiveDayContainer = document.querySelector('#five-day-forecast');
 let apiKey = 'd59cd025423d7f65edf905bd558a977d';
 let apiUrl = 'https://api.openweathermap.org/data/2.5/';
 
+let recentSearches = localStorage.getItem('recents');
+if (!recentSearches) {
+  recentSearches = [];
+} else {
+  recentSearches = JSON.parse(recentSearches);
+}
+
+renderRecentSearches();
+
+function renderRecentSearches() {
+  recentList.innerHTML = '';
+  recentSearches.forEach(city => {
+    let cityLi = document.createElement('li');
+    cityLi.textContent = city;
+    recentList.append(cityLi);
+  });
+}
+
 function getCurrentWeather(location) {
   fetch(apiUrl + 'weather?q=' + location + '&units=imperial&appid=' + apiKey)
     .then(response => response.json())
     .then(data => {
-      // console.log(data);
+      recentSearches.push(data.name);
+      localStorage.setItem('recents', JSON.stringify(recentSearches));
+      renderRecentSearches();
       showCurrentWeather(data);
       getForecast(data.coord.lat, data.coord.lon);
     });
