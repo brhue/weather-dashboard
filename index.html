@@ -7,7 +7,26 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Weather Dashboard</h1>
+  <header>
+    <h1>Weather Dashboard</h1>
+  </header>
+  <main>
+    <div>
+      <form>
+        <label for="city-input">Search for a city:</label>
+        <input type="text" name="city" id="city-input">
+        <button type="submit">Submit</button>
+      </form>
+      <ul id="recents-list"></ul>
+    </div>
+    <div>
+      <div id="current-weather"></div>
+      <div id="five-day-forecast"></div>
+    </div>
+  </main>
+  <footer>
+    <small>Weather data from <a href="https://openweathermap.org">Open Weather</a></small>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>
