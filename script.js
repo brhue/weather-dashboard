@@ -12,6 +12,7 @@ if (!recentSearches) {
   recentSearches = [];
 } else {
   recentSearches = JSON.parse(recentSearches);
+  getCurrentWeather(recentSearches[recentSearches.length - 1]);
 }
 
 renderRecentSearches();
@@ -29,9 +30,6 @@ function getCurrentWeather(location) {
   fetch(apiUrl + 'weather?q=' + location + '&units=imperial&appid=' + apiKey)
     .then(response => response.json())
     .then(data => {
-      recentSearches.push(data.name);
-      localStorage.setItem('recents', JSON.stringify(recentSearches));
-      renderRecentSearches();
       showCurrentWeather(data);
       getForecast(data.coord.lat, data.coord.lon);
     });
@@ -87,6 +85,9 @@ function showForecast(nextFive) {
 submitBtn.addEventListener('click', e => {
   e.preventDefault();
   let location = searchInput.value.trim();
+  recentSearches.push(location);
+  localStorage.setItem('recents', JSON.stringify(recentSearches));
+  renderRecentSearches();
   getCurrentWeather(location);
   searchInput.value = '';
 });
