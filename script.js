@@ -40,6 +40,10 @@ function showCurrentWeather(data) {
 
   let cityNameEl = document.createElement('h2');
   cityNameEl.textContent = data.name + ' (' + new Date(data.dt * 1000).toLocaleDateString() + ')';
+  let weatherIconEl = document.createElement('img');
+  weatherIconEl.setAttribute('src', 'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png');
+  weatherIconEl.setAttribute('height', '50px');
+  cityNameEl.append(weatherIconEl);
   let temperatureEl = document.createElement('p');
   temperatureEl.textContent = 'Temperature: ' + data.main.temp + ' °F';
   let humidityEl = document.createElement('p');
