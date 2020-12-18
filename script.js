@@ -91,3 +91,11 @@ submitBtn.addEventListener('click', e => {
   getCurrentWeather(location);
   searchInput.value = '';
 });
+
+recentList.addEventListener('click', e => {
+  let target = e.target;
+  if (target.matches('li')) {
+    let location = target.innerText;
+    getCurrentWeather(location);
+  }
+})
