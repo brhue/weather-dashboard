@@ -12,7 +12,11 @@ if (!recentSearches) {
   recentSearches = [];
 } else {
   recentSearches = JSON.parse(recentSearches);
-  getCurrentWeather(recentSearches[recentSearches.length - 1]);
+  getCurrentWeather(recentSearches[recentSearches.length - 1])
+    .then(data => {
+      showCurrentWeather(data);
+      getForecast(data.coord.lat, data.coord.lon);
+    });
 }
 
 renderRecentSearches();
@@ -27,12 +31,11 @@ function renderRecentSearches() {
 }
 
 function getCurrentWeather(location) {
-  fetch(apiUrl + 'weather?q=' + location + '&units=imperial&appid=' + apiKey)
-    .then(response => response.json())
-    .then(data => {
-      showCurrentWeather(data);
-      getForecast(data.coord.lat, data.coord.lon);
-    });
+  let queryUrl = apiUrl + 'weather?q=' + location + '&units=imperial&appid=' + apiKey;
+  return $.ajax({
+    url: queryUrl,
+    method: 'GET'
+  });
 }
 
 function showCurrentWeather(data) {
@@ -76,9 +79,11 @@ function showUvIndex(uvi) {
 }
 
 function getForecast(lat, lon) {
-  fetch(apiUrl + 'onecall?lat='+ lat + '&lon='+ lon + '&exclude=minutely,hourly,alerts&units=imperial&appid=' + apiKey)
-    .then(response => response.json())
-    .then(data => {
+  let queryUrl = apiUrl + 'onecall?lat='+ lat + '&lon='+ lon + '&exclude=minutely,hourly,alerts&units=imperial&appid=' + apiKey;
+  $.ajax({
+    url: queryUrl,
+    method: 'GET'
+  }).then(data => {
       console.log(data);
       let nextFiveDays = data.daily.slice(1, 6);
       showUvIndex(data.current.uvi);
@@ -114,10 +119,14 @@ function showForecast(nextFive) {
 submitBtn.addEventListener('click', e => {
   e.preventDefault();
   let location = searchInput.value.trim();
-  recentSearches.push(location);
-  localStorage.setItem('recents', JSON.stringify(recentSearches));
-  renderRecentSearches();
-  getCurrentWeather(location);
+  getCurrentWeather(location)
+    .then(data => {
+      recentSearches.push(location);
+      localStorage.setItem('recents', JSON.stringify(recentSearches));
+      renderRecentSearches();
+      showCurrentWeather(data);
+      getForecast(data.coord.lat, data.coord.lon);
+    });
   searchInput.value = '';
 });
 
@@ -125,6 +134,10 @@ recentList.addEventListener('click', e => {
   let target = e.target;
   if (target.matches('li')) {
     let location = target.innerText;
-    getCurrentWeather(location);
+    getCurrentWeather(location)
+      .then(data => {
+        showCurrentWeather(data);
+        getForecast(data.coord.lat, data.coord.lon);
+      });
   }
-})
+});
