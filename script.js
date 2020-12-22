@@ -88,7 +88,6 @@ function getForecast(lat, lon) {
     url: queryUrl,
     method: 'GET'
   }).then(data => {
-      console.log(data);
       let nextFiveDays = data.daily.slice(1, 6);
       showUvIndex(data.current.uvi);
       showForecast(nextFiveDays);
