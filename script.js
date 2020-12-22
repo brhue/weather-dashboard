@@ -3,6 +3,7 @@ let searchInput = document.querySelector('#city-input');
 let recentList = document.querySelector('#recents-list');
 let currentWeatherContainer = document.querySelector('#current-weather');
 let fiveDayContainer = document.querySelector('#five-day-forecast');
+let errorMessageEl = document.querySelector('#error-message');
 
 let apiKey = 'd59cd025423d7f65edf905bd558a977d';
 let apiUrl = 'https://api.openweathermap.org/data/2.5/';
@@ -35,6 +36,9 @@ function getCurrentWeather(location) {
   return $.ajax({
     url: queryUrl,
     method: 'GET'
+  }).fail((_) => {
+    errorMessageEl.textContent = 'Sorry! Couldn\'t find that city.';
+    errorMessageEl.setAttribute('style', 'display: block;');
   });
 }
 
@@ -118,6 +122,8 @@ function showForecast(nextFive) {
 
 submitBtn.addEventListener('click', e => {
   e.preventDefault();
+  errorMessageEl.textContent = '';
+  errorMessageEl.setAttribute('style', 'dispay: none;');
   let location = searchInput.value.trim();
   getCurrentWeather(location)
     .then(data => {
