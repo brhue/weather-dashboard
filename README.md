@@ -7,7 +7,7 @@ This is a simple weather dashboard that uses the [Open Weather API](https://open
 - mobile-first responsive design
 - error message when a city cannot be found
 
-Also makes use of [jQuery](https://jquery.com) for easier ajax handling.
+Also makes use of [jQuery](https://jquery.com) for easier ajax handling. Check out the [live](https://brhue.github.io/weather-dashboard/) version.
 ## Installation
 Clone the repository to your local machine.
 ## Usage
