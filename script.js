@@ -48,7 +48,7 @@ function showCurrentWeather(data) {
   let cityNameEl = document.createElement('h2');
   cityNameEl.textContent = data.name + ' (' + new Date(data.dt * 1000).toLocaleDateString() + ')';
   let weatherIconEl = document.createElement('img');
-  weatherIconEl.setAttribute('src', 'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png');
+  weatherIconEl.setAttribute('src', 'https://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png');
   weatherIconEl.setAttribute('height', '50px');
   cityNameEl.append(weatherIconEl);
   let temperatureEl = document.createElement('p');
@@ -110,7 +110,7 @@ function showForecast(nextFive) {
 
     dayEl.setAttribute('class', 'forecast-day');
     dateEl.textContent = new Date(day.dt * 1000).toLocaleDateString();
-    iconEl.setAttribute('src', 'http://openweathermap.org/img/wn/' + day.weather[0].icon + '@2x.png');
+    iconEl.setAttribute('src', 'https://openweathermap.org/img/wn/' + day.weather[0].icon + '@2x.png');
     tempEl.textContent = 'Temp: ' + day.temp.day + '°F';
     humidityEl.textContent = 'Humidity: ' + day.humidity + '%';
 
