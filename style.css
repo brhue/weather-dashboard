@@ -28,6 +28,15 @@ footer {
   margin-top: auto;
 }
 
+footer a {
+  color: #fff;
+}
+
+footer a:hover {
+  position: relative;
+  top: 1px;
+}
+
 .search-container {
   padding: 1rem;
   background-color: #eee;
