@@ -39,11 +39,15 @@ footer {
 
 .days-container {
   display: flex;
-  overflow-x: scroll;
+  flex-flow: column;
 }
 
 .forecast-day {
   padding: 1rem;
+  text-align: center;
+  background-color: powderblue;
+  border-radius: 5px;
+  margin-bottom: 1rem;
 }
 
 .uv {
@@ -71,8 +75,16 @@ footer {
   background-color: violet;
 }
 
+#error-message {
+  background-color: #ff8d8d;
+  border: 1px solid red;
+  color: #000;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+
 #recents-list {
-  /* max-height: 100px; */
   overflow-y: scroll;
 }
 
@@ -82,16 +94,30 @@ footer {
   border-color: #aaa;
   border-style: solid;
   border-width: 1px 1px 0 1px;
-  /* border-bottom-width: 0; */
+  transition: all ease .15s;
 }
 
 #recents-list li:hover {
   cursor: pointer;
   background-color: #eee;
+  border-color: #222;
+}
+
+#recents-list li:hover + li {
+  border-top-color: #222;
+}
+
+#recents-list li:active {
+  background-color: #ddd;
+  border-color: #111;
 }
 
 #recents-list li:last-of-type {
   border-bottom-width: 1px;
+}
+
+#current-weather {
+  padding: 1rem;
 }
 
 #current-weather img {
@@ -102,9 +128,26 @@ footer {
   margin-bottom: 1rem;
 }
 
+#five-day-forecast {
+  padding: 1rem;
+}
+
+#five-day-forecast > h2 {
+  margin-bottom: 1rem;
+}
+
 @media screen and (min-width: 768px) {
   main {
     display: flex;
+  }
+
+  .days-container {
+    flex-flow: unset;
+    overflow-x: scroll;
+  }
+
+  .forecast-day {
+    margin-right: 1rem;
   }
 
   .search-container {
@@ -114,9 +157,5 @@ footer {
 
   .weather-container {
     width: 70%;
-  }
-
-  #recents-list {
-    height: unset;
   }
 }
